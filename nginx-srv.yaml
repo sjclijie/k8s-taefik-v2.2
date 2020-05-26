@@ -1,0 +1,26 @@
+apiVersion: v1
+kind: Service
+metadata: 
+  name: nginx-srv
+spec:
+  ports:
+  - port: 80
+    targetPort: 80
+    protocol: TCP
+  selector:
+    app: nginx
+
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: ngx-srv-route
+spec:
+  entryPoints:
+    - web
+  routes:
+  - match: Host( `nginx.jaylee.localhost` )
+    kind: Rule
+    services:
+    - name:  nginx-srv
+      port: 80
